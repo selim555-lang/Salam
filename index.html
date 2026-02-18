@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="tk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Store | Full Experience</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-gold: #ffcc00;
+            --bg-color: #05050a;
+            --text-color: #ffffff;
+            --glass: rgba(20, 20, 30, 0.85);
+            --card-bg: rgba(255, 255, 255, 0.03);
+        }
+
+        body.light-mode {
+            --bg-color: #f4f4f9;
+            --text-color: #1a1a1a;
+            --glass: rgba(255, 255, 255, 0.9);
+            --card-bg: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+        body { background: var(--bg-color); color: var(--text-color); transition: background 0.4s, color 0.4s; overflow-x: hidden; }
+
+        /* NAVIGASYON */
+        nav {
+            position: fixed;
+            top: 20px; left: 50%; transform: translateX(-50%);
+            background: var(--glass); backdrop-filter: blur(15px);
+            border-radius: 50px; padding: 10px 25px; z-index: 1000;
+            display: flex; align-items: center; gap: 15px;
+            border: 1px solid rgba(128, 128, 128, 0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        nav a { color: var(--text-color); text-decoration: none; font-weight: 700; font-size: 0.75rem; padding: 8px 15px; border-radius: 40px; cursor: pointer; transition: 0.3s; }
+        nav a.active, nav a:hover { background: var(--primary-gold); color: #000; }
+
+        .search-container { position: relative; display: flex; align-items: center; background: rgba(128,128,128,0.1); border-radius: 20px; padding: 5px 15px; }
+        .search-container input { background: transparent; border: none; color: var(--text-color); outline: none; font-size: 0.8rem; width: 80px; transition: width 0.4s; }
+        .search-container input:focus { width: 150px; }
+        .theme-toggle { cursor: pointer; font-size: 1.1rem; color: var(--primary-gold); margin-left: 10px; }
+
+        /* SAYFALAR */
+        .page { display: none; min-height: 100vh; position: relative; }
+        .page.active { display: block; }
+
+        /* HOME */
+        #warpCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+        .home-content { position: absolute; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 5; pointer-events: none; }
+        .home-content h1 { font-size: clamp(3rem, 10vw, 5rem); font-weight: 900; background: linear-gradient(to bottom, #fff, var(--primary-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; }
+
+        /* PRODUCTS & COMMENTS SECTION */
+        .container { max-width: 1200px; margin: 0 auto; padding: 120px 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; margin-bottom: 80px; }
+        
+        .card { background: var(--card-bg); border-radius: 25px; overflow: hidden; border: 1px solid rgba(128,128,128,0.1); transition: 0.4s; cursor: pointer; }
+        .card:hover { transform: translateY(-10px); border-color: var(--primary-gold); }
+        .card img { width: 100%; height: 220px; object-fit: cover; }
+        .card-info { padding: 20px; }
+
+        /* COMMENTS */
+        .comment-box { background: var(--glass); padding: 30px; border-radius: 25px; border: 1px solid rgba(128,128,128,0.2); margin-top: 50px; }
+        .comment-item { background: rgba(128,128,128,0.1); padding: 15px; border-radius: 15px; margin-bottom: 15px; border-left: 4px solid var(--primary-gold); }
+        .comment-header { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 0.85rem; }
+
+        /* MODAL */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
+        .modal-content { background: var(--bg-color); padding: 30px; border-radius: 30px; border: 1px solid var(--primary-gold); max-width: 500px; width: 90%; position: relative; color: var(--text-color); }
+        .close-btn { position: absolute; top: 20px; right: 20px; font-size: 2rem; cursor: pointer; color: var(--primary-gold); }
+
+        /* INPUTS & BUTTONS */
+        input[type="text"], textarea { width: 100%; background: rgba(128,128,128,0.1); border: 1px solid rgba(128,128,128,0.2); padding: 12px; border-radius: 10px; color: var(--text-color); margin-bottom: 10px; outline: none; }
+        .btn { background: var(--primary-gold); color: #000; border: none; padding: 12px; border-radius: 12px; font-weight: 900; cursor: pointer; width: 100%; transition: 0.3s; }
+        .btn:hover { letter-spacing: 1px; box-shadow: 0 5px 15px rgba(255,204,0,0.3); }
+        .btn-delete { background: #ff4444; color: white; margin-top: 10px; padding: 5px 10px; font-size: 0.7rem; border-radius: 5px; border:none; cursor:pointer; display: none; }
+        
+        #adminTrigger { position: fixed; bottom: 10px; right: 10px; width: 25px; height: 25px; opacity: 0.05; cursor: pointer; z-index: 9999; }
+    </style>
+</head>
+<body class="dark-mode">
+
+    <div id="adminTrigger" onclick="checkAdmin()"></div>
+
+    <nav>
+        <a id="nav-home" class="nav-link active" onclick="showPage('home')">Baş sahypa</a>
+        <a id="nav-products" class="nav-link" onclick="showPage('products')">Önümler</a>
+        <div class="search-container">
+            <i class="fas fa-search" style="font-size: 0.8rem; opacity: 0.5;"></i>
+            <input type="text" id="searchInput" placeholder="Gözleg..." onkeyup="searchProducts()">
+        </div>
+        <div class="theme-toggle" onclick="toggleTheme()">
+            <i id="themeIcon" class="fas fa-moon"></i>
+        </div>
+        <span style="font-size: 0.7rem; font-weight: 900; color: var(--primary-gold); padding-left: 10px;">+993 64 375286</span>
+    </nav>
+
+    <div id="home" class="page active">
+        <canvas id="warpCanvas"></canvas>
+        <div class="home-content">
+            <h1>Salam:Ýörite seniň üçin!</h1>
+            <p style="letter-spacing: 10px; opacity: 0.7; font-size: 0.8rem;">Gör,haladyňmy?-habarlaş!...
+                Islän zadyň ýokmy?-teswirlere ýaz,ertir gelip gör!
+            </p>
+        </div>
+    </div>
+
+    <div id="products" class="page">
+        <div class="container">
+            <h2 style="margin-bottom: 40px; text-align: center;">Önümlerimiz</h2>
+            <div id="productGrid" class="grid"></div>
+
+            <div class="comment-box">
+                <h3 style="color: var(--primary-gold); margin-bottom: 20px;"><i class="fas fa-comments"></i> Müşderi Teswirleri</h3>
+                <div id="commentList"></div>
+                <div style="margin-top: 30px; border-top: 1px solid rgba(128,128,128,0.2); padding-top: 20px;">
+                    <h4 style="margin-bottom: 15px;">Teswir galdyryň</h4>
+                    <input type="text" id="cName" placeholder="Adyňyz">
+                    <textarea id="cText" placeholder="Pikiriňiz..." rows="3"></textarea>
+                    <button class="btn" onclick="addComment()">UGRATMAK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="admin" class="page">
+        <div class="container">
+            <div style="background: var(--glass); padding: 30px; border-radius: 20px; border: 1px solid var(--primary-gold);">
+                <h2 style="color: var(--primary-gold)">Admin Dolandyryş</h2><br>
+                <input type="text" id="pName" placeholder="Önümiň ady">
+                <input type="text" id="pPrice" placeholder="Bahasy (mysal: 100 TMT)">
+                <input type="text" id="pImg" placeholder="Surat adresi (URL)">
+                <textarea id="pDesc" placeholder="Jikme-jik maglumat..." rows="4"></textarea>
+                <button class="btn" onclick="addProduct()">ÖNÜMI GOŞ</button>
+                <button class="btn" style="background: #333; color: #fff; margin-top: 10px;" onclick="showPage('home')">ÇYKYŞ</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <img id="mImg" src="" style="width:100%; border-radius: 15px; height: 250px; object-fit: cover;">
+            <h2 id="mTitle" style="margin-top:20px; color: var(--primary-gold);"></h2>
+            <p id="mPrice" style="font-size: 1.5rem; margin: 10px 0; font-weight: 700;"></p>
+            <p id="mDesc" style="line-height: 1.6; opacity: 0.8;"></p>
+        </div>
+    </div>
+
+    <script type="importmap">
+        { "imports": { "three": "https://unpkg.com/three@0.126.0/build/three.module.js" } }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        const canvas = document.getElementById('warpCanvas');
+        const scene = new THREE.Scene();
+        const cam = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 1, 1000);
+        cam.position.z = 1; cam.rotation.x = Math.PI/2;
+        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        let starGeo = new THREE.BufferGeometry();
+        let starsCount = 3000;
+        let pos = new Float32Array(starsCount * 3);
+        for(let i=0; i<starsCount*3; i++) pos[i] = (Math.random() - 0.5) * 600;
+        starGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+        let stars = new THREE.Points(starGeo, new THREE.PointsMaterial({color: 0xaaaaaa, size: 0.7}));
+        scene.add(stars);
+
+        function animate() {
+            let p = starGeo.attributes.position.array;
+            for(let i=0; i<starsCount; i++) {
+                p[i*3+2] += 2; if(p[i*3+2] > 200) p[i*3+2] = -200;
+            }
+            starGeo.attributes.position.needsUpdate = true;
+            renderer.render(scene, cam);
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+
+    <script>
+        let isAdmin = false;
+        let products = JSON.parse(localStorage.getItem('myProducts')) || [];
+        let comments = JSON.parse(localStorage.getItem('myComments')) || [];
+
+        function toggleTheme() {
+            const body = document.body;
+            const icon = document.getElementById('themeIcon');
+            body.classList.toggle('light-mode');
+            body.classList.toggle('dark-mode');
+            icon.className = body.classList.contains('light-mode') ? 'fas fa-sun' : 'fas fa-moon';
+        }
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            const nav = document.getElementById('nav-' + pageId);
+            if(nav) nav.classList.add('active');
+            if(pageId === 'products') { renderProducts(); renderComments(); }
+        }
+
+        function checkAdmin() {
+            if(prompt("Admin paroly:") === "1234") {
+                isAdmin = true;
+                showPage('admin');
+                renderProducts();
+            }
+        }
+
+        function renderProducts(data = products) {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = '';
+            data.forEach(p => {
+                grid.innerHTML += `
+                    <div class="card" onclick="openModal(${p.id})">
+                        <img src="${p.img || 'https://via.placeholder.com/300'}">
+                        <div class="card-info">
+                            <h3>${p.name}</h3>
+                            <p style="color:var(--primary-gold); font-weight:700; margin:5px 0;">${p.price}</p>
+                            ${isAdmin ? `<button class="btn-delete" style="display:block" onclick="deleteProduct(${p.id}, event)">Öçür</button>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function searchProducts() {
+            const term = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = products.filter(p => p.name.toLowerCase().includes(term));
+            renderProducts(filtered);
+        }
+
+        function addProduct() {
+            const name = document.getElementById('pName').value;
+            const price = document.getElementById('pPrice').value;
+            const img = document.getElementById('pImg').value;
+            const desc = document.getElementById('pDesc').value;
+            if(!name || !price) return alert("Dolduryň!");
+            products.push({ id: Date.now(), name, price, img, desc });
+            localStorage.setItem('myProducts', JSON.stringify(products));
+            alert("Goşuldy!");
+            showPage('products');
+        }
+
+        function deleteProduct(id, e) {
+            e.stopPropagation();
+            if(confirm("Öçürmeli?")) {
+                products = products.filter(p => p.id !== id);
+                localStorage.setItem('myProducts', JSON.stringify(products));
+                renderProducts();
+            }
+        }
+
+        function addComment() {
+            const name = document.getElementById('cName').value;
+            const text = document.getElementById('cText').value;
+            if(!name || !text) return alert("Meýdançalary dolduryň!");
+            comments.push({ name, text, date: new Date().toLocaleDateString() });
+            localStorage.setItem('myComments', JSON.stringify(comments));
+            document.getElementById('cName').value = '';
+            document.getElementById('cText').value = '';
+            renderComments();
+        }
+
+        function renderComments() {
+            const list = document.getElementById('commentList');
+            list.innerHTML = comments.slice().reverse().map(c => `
+                <div class="comment-item">
+                    <div class="comment-header">
+                        <strong style="color: var(--primary-gold)">${c.name}</strong>
+                        <span style="opacity: 0.5">${c.date}</span>
+                    </div>
+                    <p style="font-size: 0.9rem; margin-top: 5px;">${c.text}</p>
+                </div>
+            `).join('');
+        }
+
+        function openModal(id) {
+            const p = products.find(x => x.id === id);
+            document.getElementById('mImg').src = p.img;
+            document.getElementById('mTitle').innerText = p.name;
+            document.getElementById('mPrice').innerText = p.price;
+            document.getElementById('mDesc').innerText = p.desc;
+            document.getElementById('detailModal').style.display = 'flex';
+        }
+
+        function closeModal() { document.getElementById('detailModal').style.display = 'none'; }
+
+        renderProducts();
+        renderComments();
+    </script>
+</body>
+</html>
