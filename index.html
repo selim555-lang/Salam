@@ -2,299 +2,815 @@
 <html lang="tk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Store | Full Experience</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>Salam · 2026 premium</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700;900&display=swap" rel="stylesheet">
-    
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
         :root {
-            --primary-gold: #ffcc00;
-            --bg-color: #05050a;
-            --text-color: #ffffff;
-            --glass: rgba(20, 20, 30, 0.85);
-            --card-bg: rgba(255, 255, 255, 0.03);
+            --bg: #ffffff;
+            --surface: rgba(255, 255, 255, 0.7);
+            --text: #0a0a0c;
+            --text-light: #2d2d32;
+            --orange: #f97316;
+            --blue: #3b82f6;
+            --orange-soft: #fdba74;
+            --blue-soft: #93c5fd;
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.03);
+            --nav-bg: rgba(255, 255, 255, 0.7);
+            --card-bg: rgba(255, 255, 255, 0.4);
+            --input-bg: rgba(255,255,255,0.6);
+            --btn-border: rgba(0,0,0,0.15);
         }
 
-        body.light-mode {
-            --bg-color: #f4f4f9;
-            --text-color: #1a1a1a;
-            --glass: rgba(255, 255, 255, 0.9);
-            --card-bg: #ffffff;
+        body.dark {
+            --bg: #0a0a0c;
+            --surface: rgba(18, 18, 22, 0.8);
+            --text: #f0f0f0;
+            --text-light: #b0b0b5;
+            --orange: #f97316;
+            --blue: #3b82f6;
+            --orange-soft: #c2410c;
+            --blue-soft: #1e3a8a;
+            --glass-border: rgba(255, 255, 255, 0.06);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            --nav-bg: rgba(10, 10, 12, 0.7);
+            --card-bg: rgba(30, 30, 35, 0.5);
+            --input-bg: rgba(255,255,255,0.06);
+            --btn-border: rgba(255,255,255,0.15);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
-        body { background: var(--bg-color); color: var(--text-color); transition: background 0.4s, color 0.4s; overflow-x: hidden; }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            transition: background 0.4s ease, color 0.2s;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
 
-        /* NAVIGASYON */
-        nav {
+        /* 2026 animasiýa – hereketli, dinamiki */
+        .anim-glow {
             position: fixed;
-            top: 20px; left: 50%; transform: translateX(-50%);
-            background: var(--glass); backdrop-filter: blur(15px);
-            border-radius: 50px; padding: 10px 25px; z-index: 1000;
-            display: flex; align-items: center; gap: 15px;
-            border: 1px solid rgba(128, 128, 128, 0.2);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
         }
 
-        nav a { color: var(--text-color); text-decoration: none; font-weight: 700; font-size: 0.75rem; padding: 8px 15px; border-radius: 40px; cursor: pointer; transition: 0.3s; }
-        nav a.active, nav a:hover { background: var(--primary-gold); color: #000; }
+        .anim-glow span {
+            position: absolute;
+            width: 40vmax;
+            height: 40vmax;
+            border-radius: 50%;
+            mix-blend-mode: soft-light;
+            filter: blur(90px);
+            animation: floatBlob 25s infinite alternate ease-in-out;
+            opacity: 0.5;
+        }
 
-        .search-container { position: relative; display: flex; align-items: center; background: rgba(128,128,128,0.1); border-radius: 20px; padding: 5px 15px; }
-        .search-container input { background: transparent; border: none; color: var(--text-color); outline: none; font-size: 0.8rem; width: 80px; transition: width 0.4s; }
-        .search-container input:focus { width: 150px; }
-        .theme-toggle { cursor: pointer; font-size: 1.1rem; color: var(--primary-gold); margin-left: 10px; }
+        .anim-glow .blob1 {
+            background: var(--orange);
+            top: -10%;
+            left: -10%;
+            animation-duration: 28s;
+            animation-delay: -5s;
+        }
+        .anim-glow .blob2 {
+            background: var(--blue);
+            bottom: -10%;
+            right: -5%;
+            width: 50vmax;
+            height: 50vmax;
+            animation-duration: 32s;
+            animation-delay: -2s;
+        }
+        .anim-glow .blob3 {
+            background: var(--orange-soft);
+            top: 40%;
+            right: 20%;
+            width: 35vmax;
+            height: 35vmax;
+            animation-duration: 22s;
+            mix-blend-mode: overlay;
+        }
+        .anim-glow .blob4 {
+            background: var(--blue-soft);
+            bottom: 20%;
+            left: 15%;
+            width: 45vmax;
+            height: 45vmax;
+            animation-duration: 30s;
+            animation-delay: -7s;
+            mix-blend-mode: hard-light;
+            opacity: 0.3;
+        }
 
-        /* SAYFALAR */
-        .page { display: none; min-height: 100vh; position: relative; }
-        .page.active { display: block; }
+        @keyframes floatBlob {
+            0% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(5%, 8%) scale(1.1); }
+            50% { transform: translate(-10%, 5%) scale(0.95); }
+            75% { transform: translate(8%, -12%) scale(1.15); }
+            100% { transform: translate(-5%, -5%) scale(1); }
+        }
 
-        /* HOME */
-        #warpCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
-        .home-content { position: absolute; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 5; pointer-events: none; }
-        .home-content h1 { font-size: clamp(3rem, 10vw, 5rem); font-weight: 900; background: linear-gradient(to bottom, #fff, var(--primary-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; }
+        .glass {
+            background: var(--surface);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            border-radius: 2rem;
+            box-shadow: var(--glass-shadow);
+        }
 
-        /* PRODUCTS & COMMENTS SECTION */
-        .container { max-width: 1200px; margin: 0 auto; padding: 120px 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; margin-bottom: 80px; }
-        
-        .card { background: var(--card-bg); border-radius: 25px; overflow: hidden; border: 1px solid rgba(128,128,128,0.1); transition: 0.4s; cursor: pointer; }
-        .card:hover { transform: translateY(-10px); border-color: var(--primary-gold); }
-        .card img { width: 100%; height: 220px; object-fit: cover; }
-        .card-info { padding: 20px; }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.2rem 2rem;
+            position: relative;
+            z-index: 2;
+        }
 
-        /* COMMENTS */
-        .comment-box { background: var(--glass); padding: 30px; border-radius: 25px; border: 1px solid rgba(128,128,128,0.2); margin-top: 50px; }
-        .comment-item { background: rgba(128,128,128,0.1); padding: 15px; border-radius: 15px; margin-bottom: 15px; border-left: 4px solid var(--primary-gold); }
-        .comment-header { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 0.85rem; }
+        /* ---------- NAVIGATION ---------- */
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem 1.5rem;
+            background: var(--nav-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 4rem;
+            padding: 0.8rem 1.8rem;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+            margin-bottom: 3rem;
+        }
 
-        /* MODAL */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
-        .modal-content { background: var(--bg-color); padding: 30px; border-radius: 30px; border: 1px solid var(--primary-gold); max-width: 500px; width: 90%; position: relative; color: var(--text-color); }
-        .close-btn { position: absolute; top: 20px; right: 20px; font-size: 2rem; cursor: pointer; color: var(--primary-gold); }
+        .nav-left {
+            display: flex;
+            gap: 1.8rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+        .nav-left a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.2s;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+        .nav-left a:hover { color: var(--orange); }
 
-        /* INPUTS & BUTTONS */
-        input[type="text"], textarea { width: 100%; background: rgba(128,128,128,0.1); border: 1px solid rgba(128,128,128,0.2); padding: 12px; border-radius: 10px; color: var(--text-color); margin-bottom: 10px; outline: none; }
-        .btn { background: var(--primary-gold); color: #000; border: none; padding: 12px; border-radius: 12px; font-weight: 900; cursor: pointer; width: 100%; transition: 0.3s; }
-        .btn:hover { letter-spacing: 1px; box-shadow: 0 5px 15px rgba(255,204,0,0.3); }
-        .btn-delete { background: #ff4444; color: white; margin-top: 10px; padding: 5px 10px; font-size: 0.7rem; border-radius: 5px; border:none; cursor:pointer; display: none; }
-        
-        #adminTrigger { position: fixed; bottom: 10px; right: 10px; width: 25px; height: 25px; opacity: 0.05; cursor: pointer; z-index: 9999; }
+        .nav-center {
+            flex: 1 1 260px;
+            min-width: 200px;
+        }
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--input-bg);
+            border-radius: 3rem;
+            padding: 0.5rem 1.2rem;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(8px);
+            gap: 0.6rem;
+        }
+        .search-box i {
+            color: var(--orange);
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        .search-box input {
+            background: transparent;
+            border: none;
+            width: 100%;
+            color: var(--text);
+            font-size: 0.95rem;
+            outline: none;
+        }
+        .search-box input::placeholder { color: var(--text-light); }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .phone {
+            font-weight: 600;
+            color: var(--blue);
+            text-decoration: none;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            font-size: 1.05rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 3rem;
+            border: 1px solid transparent;
+            transition: border 0.2s;
+        }
+        .phone i { margin-right: 6px; color: var(--orange); }
+        .phone:hover { border-color: var(--orange); }
+
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--btn-border);
+            background: var(--input-bg);
+            border-radius: 3rem;
+            width: 2.8rem;
+            height: 2.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--orange);
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            backdrop-filter: blur(4px);
+        }
+        .theme-toggle:hover { border-color: var(--blue); transform: scale(1.02); color: var(--blue); }
+
+        /* ---------- PRODUCT SECTION ---------- */
+        .section-title {
+            font-size: 2rem;
+            font-weight: 500;
+            margin: 3rem 0 1.5rem 0;
+            letter-spacing: -0.5px;
+            border-left: 6px solid var(--orange);
+            padding-left: 1.2rem;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 2rem;
+            min-height: 200px;
+        }
+
+        .empty-message {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 4rem 2rem;
+            background: var(--card-bg);
+            backdrop-filter: blur(8px);
+            border-radius: 4rem;
+            border: 1px dashed var(--blue);
+            color: var(--text-light);
+            font-size: 1.3rem;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 2rem;
+            padding: 1.5rem 1.2rem;
+            transition: transform 0.25s ease, box-shadow 0.3s;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.02);
+        }
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 30px rgba(249, 115, 22, 0.1), 0 0 0 1px var(--orange);
+            border-color: var(--orange);
+        }
+
+        .product-img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 1.5rem;
+            background: #e0dcd5;
+            margin-bottom: 1.2rem;
+            border: 2px solid transparent;
+            transition: border 0.2s;
+        }
+        .product-card:hover .product-img { border-color: var(--blue); }
+
+        .product-name {
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin-bottom: 0.3rem;
+        }
+        .product-price {
+            font-size: 1.2rem;
+            color: var(--orange);
+            font-weight: 600;
+        }
+
+        /* ---------- MODAL (düşündiriş goşuldy) ---------- */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            max-width: 450px;
+            width: 90%;
+            background: var(--surface);
+            backdrop-filter: blur(30px);
+            border-radius: 2.5rem;
+            padding: 2rem;
+            border: 2px solid var(--orange);
+            box-shadow: 0 30px 50px rgba(0,0,0,0.5);
+            color: var(--text);
+            position: relative;
+        }
+        .modal-content img {
+            width: 100%;
+            border-radius: 1.8rem;
+            margin: 1rem 0;
+            border: 1px solid var(--blue);
+        }
+        .close-modal {
+            position: absolute;
+            top: 1rem; right: 1.5rem;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--orange);
+        }
+        .modal-description {
+            margin: 1rem 0;
+            padding: 1rem;
+            background: var(--input-bg);
+            border-radius: 1.5rem;
+            border-left: 4px solid var(--blue);
+            font-style: italic;
+        }
+
+        /* ---------- TESTIMONIALS ---------- */
+        .testimonials-section {
+            margin: 4rem 0 3rem;
+        }
+        .testimonial-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            margin: 2rem 0;
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+        .testimonial-item {
+            background: var(--card-bg);
+            backdrop-filter: blur(8px);
+            border-radius: 2rem;
+            padding: 1rem 1.5rem;
+            border: 1px solid var(--glass-border);
+            border-left: 4px solid var(--blue);
+        }
+        .testimonial-name {
+            font-weight: 600;
+            color: var(--orange);
+        }
+        .testimonial-text {
+            margin-top: 0.3rem;
+            font-style: italic;
+        }
+        .add-testimonial {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            background: var(--surface);
+            backdrop-filter: blur(16px);
+            padding: 1.5rem;
+            border-radius: 2.5rem;
+            border: 1px solid var(--glass-border);
+        }
+        .add-testimonial input, .add-testimonial textarea {
+            flex: 1 1 200px;
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 3rem;
+            padding: 0.9rem 1.5rem;
+            color: var(--text);
+            outline: none;
+            font-size: 1rem;
+        }
+        .add-testimonial textarea { min-width: 250px; }
+        .add-testimonial button {
+            background: var(--orange);
+            border: none;
+            border-radius: 3rem;
+            padding: 0.9rem 2rem;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: 0.15s;
+            border: 1px solid transparent;
+        }
+        .add-testimonial button:hover { background: var(--blue); color: black; }
+
+        /* ---------- ADMIN (gizlin trigger) ---------- */
+        .admin-trigger {
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            width: 28px;
+            height: 28px;
+            background: transparent;
+            opacity: 0;
+            cursor: pointer;
+            z-index: 999;
+            border: none;
+            pointer-events: auto;
+        }
+
+        .admin-panel {
+            display: none;
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: min(90%, 450px);
+            max-height: 80vh;
+            overflow-y: auto;
+            background: var(--surface);
+            backdrop-filter: blur(30px);
+            border: 2px solid var(--orange);
+            border-radius: 3rem;
+            padding: 2rem;
+            z-index: 2000;
+            color: var(--text);
+            box-shadow: 0 30px 60px black;
+        }
+        .admin-panel.show { display: block; }
+        .admin-panel h3 { font-size: 2rem; margin-bottom: 1rem; }
+        .admin-panel input, .admin-panel textarea, .admin-panel button {
+            width: 100%;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 3rem;
+            border: 1px solid var(--glass-border);
+            background: var(--input-bg);
+            color: var(--text);
+            font-size: 1rem;
+        }
+        .admin-panel textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        .admin-panel .file-input {
+            padding: 0.7rem;
+        }
+        .admin-panel .product-admin-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--card-bg);
+            margin: 0.5rem 0;
+            padding: 0.8rem 1.2rem;
+            border-radius: 3rem;
+        }
+        .admin-panel .delete-prod {
+            background: transparent;
+            border: 1px solid var(--orange);
+            color: var(--orange);
+            width: auto;
+            padding: 0.3rem 1rem;
+            cursor: pointer;
+        }
+        .admin-panel .delete-prod:hover { background: var(--orange); color: black; }
+
+        @media (max-width: 700px) {
+            .container { padding: 1rem; }
+            nav { flex-direction: column; align-items: stretch; border-radius: 2rem; }
+            .nav-left { justify-content: center; }
+            .nav-right { justify-content: space-between; }
+            .search-box { width: 100%; }
+            .product-grid { gap: 1rem; }
+        }
     </style>
 </head>
-<body class="dark-mode">
-
-    <div id="adminTrigger" onclick="checkAdmin()"></div>
-
-    <nav>
-        <a id="nav-home" class="nav-link active" onclick="showPage('home')">Baş sahypa</a>
-        <a id="nav-products" class="nav-link" onclick="showPage('products')">Önümler</a>
-        <div class="search-container">
-            <i class="fas fa-search" style="font-size: 0.8rem; opacity: 0.5;"></i>
-            <input type="text" id="searchInput" placeholder="Gözleg..." onkeyup="searchProducts()">
-        </div>
-        <div class="theme-toggle" onclick="toggleTheme()">
-            <i id="themeIcon" class="fas fa-moon"></i>
-        </div>
-        <span style="font-size: 0.7rem; font-weight: 900; color: var(--primary-gold); padding-left: 10px;">+993 64 375286</span>
-    </nav>
-
-    <div id="home" class="page active">
-        <canvas id="warpCanvas"></canvas>
-        <div class="home-content">
-            <h1>Salam:Ýörite seniň üçin!</h1>
-            <p style="letter-spacing: 10px; opacity: 0.7; font-size: 0.8rem;">Gör,haladyňmy?-habarlaş!...
-                Islän zadyň ýokmy?-teswirlere ýaz,ertir gelip gör!
-            </p>
-        </div>
+<body>
+    <!-- animasiýa -->
+    <div class="anim-glow">
+        <span class="blob1"></span>
+        <span class="blob2"></span>
+        <span class="blob3"></span>
+        <span class="blob4"></span>
     </div>
 
-    <div id="products" class="page">
-        <div class="container">
-            <h2 style="margin-bottom: 40px; text-align: center;">Önümlerimiz</h2>
-            <div id="productGrid" class="grid"></div>
-
-            <div class="comment-box">
-                <h3 style="color: var(--primary-gold); margin-bottom: 20px;"><i class="fas fa-comments"></i> Müşderi Teswirleri</h3>
-                <div id="commentList"></div>
-                <div style="margin-top: 30px; border-top: 1px solid rgba(128,128,128,0.2); padding-top: 20px;">
-                    <h4 style="margin-bottom: 15px;">Teswir galdyryň</h4>
-                    <input type="text" id="cName" placeholder="Adyňyz">
-                    <textarea id="cText" placeholder="Pikiriňiz..." rows="3"></textarea>
-                    <button class="btn" onclick="addComment()">UGRATMAK</button>
+    <div class="container">
+        <nav>
+            <div class="nav-left">
+                <a href="#" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'}); return false;">Baş sahypa</a>
+                <a href="#products" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'}); return false;">Önümler</a>
+            </div>
+            <div class="nav-center">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Gözleg...">
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div id="admin" class="page">
-        <div class="container">
-            <div style="background: var(--glass); padding: 30px; border-radius: 20px; border: 1px solid var(--primary-gold);">
-                <h2 style="color: var(--primary-gold)">Admin Dolandyryş</h2><br>
-                <input type="text" id="pName" placeholder="Önümiň ady">
-                <input type="text" id="pPrice" placeholder="Bahasy (mysal: 100 TMT)">
-                <input type="text" id="pImg" placeholder="Surat adresi (URL)">
-                <textarea id="pDesc" placeholder="Jikme-jik maglumat..." rows="4"></textarea>
-                <button class="btn" onclick="addProduct()">ÖNÜMI GOŞ</button>
-                <button class="btn" style="background: #333; color: #fff; margin-top: 10px;" onclick="showPage('home')">ÇYKYŞ</button>
+            <div class="nav-right">
+                <a href="tel:+99361234567" class="phone"><i class="fas fa-phone-alt"></i>+993 61 234567</a>
+                <button class="theme-toggle" id="themeToggle" aria-label="Gije/gündiz"><i class="fas fa-moon"></i></button>
             </div>
+        </nav>
+
+        <!-- products grid -->
+        <section id="products">
+            <h2 class="section-title">Kolleksiýa</h2>
+            <div class="product-grid" id="productGrid"></div>
+        </section>
+
+        <!-- testimonials -->
+        <section class="testimonials-section" id="testimonials">
+            <h2 class="section-title">Müşderi pikirleri</h2>
+            <div class="testimonial-list" id="testimonialList"></div>
+            <div class="add-testimonial">
+                <input type="text" id="testimonialName" placeholder="Adyňyz">
+                <textarea id="testimonialComment" placeholder="Teswiriňiz..." rows="2"></textarea>
+                <button id="addTestimonialBtn">Goş</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- gizlin admin düwmejik -->
+    <div class="admin-trigger" id="adminTrigger" title=""></div>
+
+    <!-- admin panel -->
+    <div class="admin-panel" id="adminPanel">
+        <h3>Admin <span style="color:var(--orange)">●●●</span></h3>
+        <div id="adminLogin">
+            <input type="password" id="adminPass" placeholder="parol (1234)">
+            <button id="loginAdminBtn">Gir</button>
+        </div>
+        <div id="adminControls" style="display:none;">
+            <h4>+ Täze önüm</h4>
+            <input type="text" id="prodName" placeholder="ady">
+            <input type="number" id="prodPrice" placeholder="bahasy (manat)">
+            <textarea id="prodDesc" placeholder="düşündiriş (önüm barada maglumat)"></textarea>
+            <input type="file" id="prodImage" accept="image/*" class="file-input">
+            <button id="addProductBtn">Önüm goş</button>
+            <hr style="margin:1.5rem 0; border-color:var(--orange);">
+            <h4>Bar önümler</h4>
+            <div id="adminProductList"></div>
+            <button id="closeAdminBtn" style="background:transparent; border:1px solid var(--orange); margin-top:1rem; color:var(--orange);">Ýap</button>
         </div>
     </div>
 
-    <div id="detailModal" class="modal">
+    <!-- product detail modal (düşündiriş bilen) -->
+    <div class="modal" id="productModal">
         <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <img id="mImg" src="" style="width:100%; border-radius: 15px; height: 250px; object-fit: cover;">
-            <h2 id="mTitle" style="margin-top:20px; color: var(--primary-gold);"></h2>
-            <p id="mPrice" style="font-size: 1.5rem; margin: 10px 0; font-weight: 700;"></p>
-            <p id="mDesc" style="line-height: 1.6; opacity: 0.8;"></p>
+            <span class="close-modal" id="closeModal">&times;</span>
+            <img id="modalImage" src="" alt="">
+            <h2 id="modalName"></h2>
+            <p id="modalPrice" style="font-size:1.8rem; color:var(--orange);"></p>
+            <div id="modalDescription" class="modal-description"></div>
+            <p style="margin-top:1rem; border-top:1px dashed var(--blue); padding-top:1rem;">2026 premium kolleksiýa</p>
         </div>
     </div>
-
-    <script type="importmap">
-        { "imports": { "three": "https://unpkg.com/three@0.126.0/build/three.module.js" } }
-    </script>
-
-    <script type="module">
-        import * as THREE from 'three';
-        const canvas = document.getElementById('warpCanvas');
-        const scene = new THREE.Scene();
-        const cam = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 1, 1000);
-        cam.position.z = 1; cam.rotation.x = Math.PI/2;
-        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-
-        let starGeo = new THREE.BufferGeometry();
-        let starsCount = 3000;
-        let pos = new Float32Array(starsCount * 3);
-        for(let i=0; i<starsCount*3; i++) pos[i] = (Math.random() - 0.5) * 600;
-        starGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-        let stars = new THREE.Points(starGeo, new THREE.PointsMaterial({color: 0xaaaaaa, size: 0.7}));
-        scene.add(stars);
-
-        function animate() {
-            let p = starGeo.attributes.position.array;
-            for(let i=0; i<starsCount; i++) {
-                p[i*3+2] += 2; if(p[i*3+2] > 200) p[i*3+2] = -200;
-            }
-            starGeo.attributes.position.needsUpdate = true;
-            renderer.render(scene, cam);
-            requestAnimationFrame(animate);
-        }
-        animate();
-    </script>
 
     <script>
-        let isAdmin = false;
-        let products = JSON.parse(localStorage.getItem('myProducts')) || [];
-        let comments = JSON.parse(localStorage.getItem('myComments')) || [];
+        (function() {
+            const IMGBB_API_KEY = 'cb7e9b9d4e1b4b6b8f2c6f3e9d8c7a6b'; 
+            const STORAGE_PRODUCTS = 'salam_products';
+            const STORAGE_TESTIMONIALS = 'salam_testimonials';
 
-        function toggleTheme() {
-            const body = document.body;
-            const icon = document.getElementById('themeIcon');
-            body.classList.toggle('light-mode');
-            body.classList.toggle('dark-mode');
-            icon.className = body.classList.contains('light-mode') ? 'fas fa-sun' : 'fas fa-moon';
-        }
+            let products = [];
+            let testimonials = [];
 
-        function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            const nav = document.getElementById('nav-' + pageId);
-            if(nav) nav.classList.add('active');
-            if(pageId === 'products') { renderProducts(); renderComments(); }
-        }
+            function loadData() {
+                const savedProducts = localStorage.getItem(STORAGE_PRODUCTS);
+                if (savedProducts) {
+                    products = JSON.parse(savedProducts);
+                } else {
+                    products = [];
+                    saveProducts();
+                }
 
-        function checkAdmin() {
-            if(prompt("Admin paroly:") === "1234") {
-                isAdmin = true;
-                showPage('admin');
-                renderProducts();
+                const savedTestimonials = localStorage.getItem(STORAGE_TESTIMONIALS);
+                if (savedTestimonials) {
+                    testimonials = JSON.parse(savedTestimonials);
+                } else {
+                    testimonials = [];
+                    saveTestimonials();
+                }
             }
-        }
+            function saveProducts() { localStorage.setItem(STORAGE_PRODUCTS, JSON.stringify(products)); }
+            function saveTestimonials() { localStorage.setItem(STORAGE_TESTIMONIALS, JSON.stringify(testimonials)); }
 
-        function renderProducts(data = products) {
-            const grid = document.getElementById('productGrid');
-            grid.innerHTML = '';
-            data.forEach(p => {
-                grid.innerHTML += `
-                    <div class="card" onclick="openModal(${p.id})">
-                        <img src="${p.img || 'https://via.placeholder.com/300'}">
-                        <div class="card-info">
-                            <h3>${p.name}</h3>
-                            <p style="color:var(--primary-gold); font-weight:700; margin:5px 0;">${p.price}</p>
-                            ${isAdmin ? `<button class="btn-delete" style="display:block" onclick="deleteProduct(${p.id}, event)">Öçür</button>` : ''}
-                        </div>
+            function renderProducts(filter = '') {
+                const grid = document.getElementById('productGrid');
+                if (!grid) return;
+                const filtered = products.filter(p => p.name.toLowerCase().includes(filter.toLowerCase()));
+                if (filtered.length === 0) {
+                    grid.innerHTML = `<div class="empty-message">✨ Häzirki wagtda önüm ýok. Admin paneli arkaly goşuň.</div>`;
+                    return;
+                }
+                grid.innerHTML = filtered.map(p => `
+                    <div class="product-card" data-id="${p.id}">
+                        <img src="${p.image}" alt="${p.name}" class="product-img" loading="lazy" onerror="this.src='https://via.placeholder.com/300?text=2026'">
+                        <div class="product-name">${p.name}</div>
+                        <div class="product-price">${p.price} manat</div>
                     </div>
-                `;
-            });
-        }
+                `).join('');
+            }
 
-        function searchProducts() {
-            const term = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = products.filter(p => p.name.toLowerCase().includes(term));
-            renderProducts(filtered);
-        }
+            function renderTestimonials() {
+                const list = document.getElementById('testimonialList');
+                if (!list) return;
+                if (testimonials.length === 0) {
+                    list.innerHTML = `<div class="testimonial-item" style="opacity:0.8;">Entek teswir ýok. Ilkinji pikir ýazyň!</div>`;
+                    return;
+                }
+                list.innerHTML = testimonials.map(t => `
+                    <div class="testimonial-item">
+                        <span class="testimonial-name">${t.name}</span>
+                        <div class="testimonial-text">“${t.text}”</div>
+                    </div>
+                `).join('');
+            }
 
-        function addProduct() {
-            const name = document.getElementById('pName').value;
-            const price = document.getElementById('pPrice').value;
-            const img = document.getElementById('pImg').value;
-            const desc = document.getElementById('pDesc').value;
-            if(!name || !price) return alert("Dolduryň!");
-            products.push({ id: Date.now(), name, price, img, desc });
-            localStorage.setItem('myProducts', JSON.stringify(products));
-            alert("Goşuldy!");
-            showPage('products');
-        }
+            function showModal(productId) {
+                const prod = products.find(p => p.id === productId);
+                if (!prod) return;
+                document.getElementById('modalImage').src = prod.image;
+                document.getElementById('modalName').innerText = prod.name;
+                document.getElementById('modalPrice').innerText = prod.price + ' manat';
+                // düşündiriş görkez
+                document.getElementById('modalDescription').innerText = prod.description || 'Maglumat ýok';
+                document.getElementById('productModal').classList.add('active');
+            }
 
-        function deleteProduct(id, e) {
-            e.stopPropagation();
-            if(confirm("Öçürmeli?")) {
+            async function uploadToImgBB(file) {
+                if (!file) return null;
+                const formData = new FormData();
+                formData.append('image', file);
+                const url = `https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`;
+                try {
+                    const res = await fetch(url, { method: 'POST', body: formData });
+                    const data = await res.json();
+                    if (data.success) return data.data.url;
+                    else throw new Error('ImgBB error');
+                } catch (e) {
+                    alert('ImgBB upload şowsuz, ýöne surat ýerli görkeziler (demo). API açar barlaň.');
+                    return URL.createObjectURL(file);
+                }
+            }
+
+            async function onAddProduct() {
+                const name = document.getElementById('prodName').value.trim();
+                const price = parseFloat(document.getElementById('prodPrice').value);
+                const desc = document.getElementById('prodDesc').value.trim() || 'Giňişleýin maglumat ýok';
+                const fileInput = document.getElementById('prodImage');
+                if (!name || !price || !fileInput.files[0]) {
+                    alert('Ady, bahasy we surat hökman!');
+                    return;
+                }
+                const file = fileInput.files[0];
+                const imageUrl = await uploadToImgBB(file);
+                if (!imageUrl) return;
+                const newId = 'prod_' + Date.now() + Math.random().toString(36).substr(2, 6);
+                products.push({ id: newId, name, price, description: desc, image: imageUrl });
+                saveProducts();
+                renderProducts(document.getElementById('searchInput').value);
+                updateAdminProductList();
+                document.getElementById('prodName').value = '';
+                document.getElementById('prodPrice').value = '';
+                document.getElementById('prodDesc').value = '';
+                document.getElementById('prodImage').value = '';
+            }
+
+            function deleteProduct(id) {
                 products = products.filter(p => p.id !== id);
-                localStorage.setItem('myProducts', JSON.stringify(products));
-                renderProducts();
+                saveProducts();
+                renderProducts(document.getElementById('searchInput').value);
+                updateAdminProductList();
             }
-        }
 
-        function addComment() {
-            const name = document.getElementById('cName').value;
-            const text = document.getElementById('cText').value;
-            if(!name || !text) return alert("Meýdançalary dolduryň!");
-            comments.push({ name, text, date: new Date().toLocaleDateString() });
-            localStorage.setItem('myComments', JSON.stringify(comments));
-            document.getElementById('cName').value = '';
-            document.getElementById('cText').value = '';
-            renderComments();
-        }
-
-        function renderComments() {
-            const list = document.getElementById('commentList');
-            list.innerHTML = comments.slice().reverse().map(c => `
-                <div class="comment-item">
-                    <div class="comment-header">
-                        <strong style="color: var(--primary-gold)">${c.name}</strong>
-                        <span style="opacity: 0.5">${c.date}</span>
+            function updateAdminProductList() {
+                const container = document.getElementById('adminProductList');
+                if (!container) return;
+                if (products.length === 0) {
+                    container.innerHTML = '<p style="padding:1rem;">Önüm ýok</p>';
+                    return;
+                }
+                container.innerHTML = products.map(p => `
+                    <div class="product-admin-item">
+                        <span>${p.name} – ${p.price} manat</span>
+                        <button class="delete-prod" data-id="${p.id}"><i class="fas fa-trash"></i></button>
                     </div>
-                    <p style="font-size: 0.9rem; margin-top: 5px;">${c.text}</p>
-                </div>
-            `).join('');
-        }
+                `).join('');
+                document.querySelectorAll('.delete-prod').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        deleteProduct(btn.dataset.id);
+                    });
+                });
+            }
 
-        function openModal(id) {
-            const p = products.find(x => x.id === id);
-            document.getElementById('mImg').src = p.img;
-            document.getElementById('mTitle').innerText = p.name;
-            document.getElementById('mPrice').innerText = p.price;
-            document.getElementById('mDesc').innerText = p.desc;
-            document.getElementById('detailModal').style.display = 'flex';
-        }
+            function addTestimonial() {
+                const nameInp = document.getElementById('testimonialName');
+                const textInp = document.getElementById('testimonialComment');
+                const name = nameInp.value.trim();
+                const text = textInp.value.trim();
+                if (!name || !text) return;
+                testimonials.push({ name, text });
+                saveTestimonials();
+                renderTestimonials();
+                nameInp.value = '';
+                textInp.value = '';
+            }
 
-        function closeModal() { document.getElementById('detailModal').style.display = 'none'; }
+            function initTheme() {
+                const saved = localStorage.getItem('theme');
+                if (saved === 'dark') document.body.classList.add('dark');
+                updateThemeIcon();
+            }
+            function toggleTheme() {
+                document.body.classList.toggle('dark');
+                localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+                updateThemeIcon();
+            }
+            function updateThemeIcon() {
+                const icon = document.querySelector('#themeToggle i');
+                if (document.body.classList.contains('dark')) {
+                    icon.className = 'fas fa-sun';
+                } else {
+                    icon.className = 'fas fa-moon';
+                }
+            }
 
-        renderProducts();
-        renderComments();
+            window.addEventListener('load', () => {
+                loadData();
+                renderProducts();
+                renderTestimonials();
+                initTheme();
+                updateAdminProductList();
+
+                document.getElementById('searchInput').addEventListener('input', (e) => {
+                    renderProducts(e.target.value);
+                });
+
+                document.getElementById('productGrid').addEventListener('click', (e) => {
+                    const card = e.target.closest('.product-card');
+                    if (card) showModal(card.dataset.id);
+                });
+
+                document.getElementById('closeModal').addEventListener('click', () => {
+                    document.getElementById('productModal').classList.remove('active');
+                });
+                window.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('modal')) {
+                        document.getElementById('productModal').classList.remove('active');
+                    }
+                });
+
+                document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+                document.getElementById('addTestimonialBtn').addEventListener('click', addTestimonial);
+
+                const adminTrigger = document.getElementById('adminTrigger');
+                adminTrigger.addEventListener('click', () => {
+                    document.getElementById('adminPanel').classList.toggle('show');
+                });
+
+                document.getElementById('loginAdminBtn').addEventListener('click', () => {
+                    const pass = document.getElementById('adminPass').value;
+                    if (pass === '1234') {
+                        document.getElementById('adminLogin').style.display = 'none';
+                        document.getElementById('adminControls').style.display = 'block';
+                    } else {
+                        alert('parol ýalňyş');
+                    }
+                });
+
+                document.getElementById('addProductBtn').addEventListener('click', onAddProduct);
+
+                document.getElementById('closeAdminBtn').addEventListener('click', () => {
+                    document.getElementById('adminPanel').classList.remove('show');
+                    document.getElementById('adminLogin').style.display = 'block';
+                    document.getElementById('adminControls').style.display = 'none';
+                    document.getElementById('adminPass').value = '';
+                });
+            });
+        })();
     </script>
 </body>
 </html>
