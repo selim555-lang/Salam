@@ -4,53 +4,204 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>Salam · 2026 premium</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Seniň owadan stilleriň üýtgewsiz galdy */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        :root { --bg: #ffffff; --surface: rgba(255, 255, 255, 0.8); --text: #0a0a0c; --text-light: #2d2d32; --orange: #f97316; --blue: #3b82f6; --orange-soft: #fdba74; --blue-soft: #93c5fd; --glass-border: rgba(0, 0, 0, 0.1); --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.03); --nav-bg: rgba(255, 255, 255, 0.8); --card-bg: rgba(255, 255, 255, 0.5); --input-bg: rgba(255,255,255,0.7); --btn-border: rgba(0,0,0,0.15); }
-        body.dark { --bg: #0a0a0c; --surface: rgba(18, 18, 22, 0.85); --text: #f0f0f0; --text-light: #b0b0b5; --orange: #f97316; --blue: #3b82f6; --orange-soft: #c2410c; --blue-soft: #1e3a8a; --glass-border: rgba(255, 255, 255, 0.06); --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.6); --nav-bg: rgba(10, 10, 12, 0.8); --card-bg: rgba(30, 30, 35, 0.6); --input-bg: rgba(255,255,255,0.08); --btn-border: rgba(255,255,255,0.15); }
-        body { background-color: var(--bg); color: var(--text); transition: background 0.4s ease, color 0.2s; min-height: 100vh; position: relative; overflow-x: hidden; }
-        .anim-glow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; overflow: hidden; }
-        .anim-glow span { position: absolute; width: 80vmax; height: 80vmax; border-radius: 50%; mix-blend-mode: soft-light; filter: blur(100px); animation: floatBlob 20s infinite alternate ease-in-out; opacity: 0.4; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        :root {
+            --bg: #ffffff;
+            --surface: rgba(255, 255, 255, 0.8);
+            --text: #0a0a0c;
+            --text-light: #2d2d32;
+            --orange: #f97316;
+            --blue: #3b82f6;
+            --orange-soft: #fdba74;
+            --blue-soft: #93c5fd;
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.03);
+            --nav-bg: rgba(255, 255, 255, 0.8);
+            --card-bg: rgba(255, 255, 255, 0.5);
+            --input-bg: rgba(255,255,255,0.7);
+            --btn-border: rgba(0,0,0,0.15);
+        }
+
+        body.dark {
+            --bg: #0a0a0c;
+            --surface: rgba(18, 18, 22, 0.85);
+            --text: #f0f0f0;
+            --text-light: #b0b0b5;
+            --orange: #f97316;
+            --blue: #3b82f6;
+            --orange-soft: #c2410c;
+            --blue-soft: #1e3a8a;
+            --glass-border: rgba(255, 255, 255, 0.06);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            --nav-bg: rgba(10, 10, 12, 0.8);
+            --card-bg: rgba(30, 30, 35, 0.6);
+            --input-bg: rgba(255,255,255,0.08);
+            --btn-border: rgba(255,255,255,0.15);
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            transition: background 0.4s ease, color 0.2s;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .anim-glow {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .anim-glow span {
+            position: absolute;
+            width: 80vmax; height: 80vmax;
+            border-radius: 50%;
+            mix-blend-mode: soft-light;
+            filter: blur(100px);
+            animation: floatBlob 20s infinite alternate ease-in-out;
+            opacity: 0.4;
+        }
+
         .anim-glow .blob1 { background: var(--orange); top: -20%; left: -20%; animation-duration: 24s; }
-        .anim-glow .blob2 { background: var(--blue); bottom: -20%; right: -15%; width: 90vmax; height: 90vmax; animation-duration: 28s; animation-delay: -5s; }
-        .anim-glow .blob3 { background: var(--orange-soft); top: 30%; right: 10%; width: 70vmax; height: 70vmax; animation-duration: 22s; mix-blend-mode: overlay; }
-        .anim-glow .blob4 { background: var(--blue-soft); bottom: 20%; left: 5%; width: 85vmax; height: 85vmax; animation-duration: 30s; mix-blend-mode: hard-light; opacity: 0.3; }
-        @keyframes floatBlob { 0% { transform: translate(0, 0) scale(1); } 33% { transform: translate(4%, 6%) scale(1.1); } 66% { transform: translate(-8%, 3%) scale(0.95); } 100% { transform: translate(5%, -8%) scale(1.05); } }
-        .container { max-width: 1400px; margin: 0 auto; padding: 0.8rem 1rem 2rem; position: relative; z-index: 2; }
-        .top-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.7rem; background: var(--nav-bg); backdrop-filter: blur(20px); border-radius: 2rem; padding: 0.8rem 1.2rem; border: 1px solid var(--glass-border); box-shadow: 0 8px 25px rgba(0,0,0,0.05); margin-bottom: 2rem; }
+        .anim-glow .blob2 { background: var(--blue); bottom: -20%; right: -15%; animation-duration: 28s; animation-delay: -5s; }
+        .anim-glow .blob3 { background: var(--orange-soft); top: 30%; right: 10%; animation-duration: 22s; mix-blend-mode: overlay; }
+        .anim-glow .blob4 { background: var(--blue-soft); bottom: 20%; left: 5%; animation-duration: 30s; mix-blend-mode: hard-light; opacity: 0.3; }
+
+        @keyframes floatBlob {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(4%, 6%) scale(1.1); }
+            66% { transform: translate(-8%, 3%) scale(0.95); }
+            100% { transform: translate(5%, -8%) scale(1.05); }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0.8rem 1rem 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .top-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.7rem;
+            background: var(--nav-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 2rem;
+            padding: 0.8rem 1.2rem;
+            border: 1px solid var(--glass-border);
+            margin-bottom: 2rem;
+        }
+
         .search-wrapper { flex: 3 1 200px; }
-        .search-box { display: flex; align-items: center; background: var(--input-bg); border-radius: 3rem; padding: 0.6rem 1.2rem; border: 1px solid var(--glass-border); gap: 0.5rem; }
+        .search-box {
+            display: flex; align-items: center;
+            background: var(--input-bg);
+            border-radius: 3rem; padding: 0.6rem 1.2rem;
+            border: 1px solid var(--glass-border); gap: 0.5rem;
+        }
         .search-box input { background: transparent; border: none; width: 100%; color: var(--text); outline: none; }
-        .phone { font-weight: 600; color: var(--blue); text-decoration: none; padding: 0.5rem 1rem; border-radius: 2rem; border: 1px solid var(--btn-border); background: var(--input-bg); display: inline-flex; align-items: center; gap: 0.4rem; }
-        .theme-toggle { background: var(--input-bg); border: 1px solid var(--btn-border); border-radius: 2rem; width: 2.8rem; height: 2.8rem; display: flex; align-items: center; justify-content: center; color: var(--orange); cursor: pointer; }
-        .section-title { font-size: 1.8rem; font-weight: 500; margin: 2.5rem 0 1.2rem; border-left: 6px solid var(--orange); padding-left: 1rem; }
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
-        .product-card { background: var(--card-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 2rem; padding: 1.5rem; transition: 0.3s; cursor: pointer; text-align: center; }
-        .product-card:hover { transform: translateY(-5px); border-color: var(--orange); }
-        .product-img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 1.8rem; margin-bottom: 1rem; }
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(10px); z-index: 2000; align-items: center; justify-content: center; padding: 1rem; }
+
+        .actions { display: flex; align-items: center; gap: 0.6rem; justify-content: flex-end; }
+        .phone {
+            font-weight: 600; color: var(--blue); text-decoration: none;
+            padding: 0.5rem 1rem; border-radius: 2rem;
+            border: 1px solid var(--btn-border); background: var(--input-bg);
+            display: inline-flex; align-items: center; gap: 0.4rem;
+        }
+
+        .theme-toggle {
+            background: var(--input-bg); border: 1px solid var(--btn-border);
+            border-radius: 2rem; width: 2.8rem; height: 2.8rem;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--orange); cursor: pointer;
+        }
+
+        .section-title {
+            font-size: 1.8rem; margin: 2.5rem 0 1.2rem;
+            border-left: 6px solid var(--orange); padding-left: 1rem;
+        }
+
+        .product-grid {
+            display: grid; grid-template-columns: 1fr; gap: 1.5rem;
+        }
+
+        .product-card {
+            background: var(--card-bg); backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border); border-radius: 2rem;
+            padding: 1.5rem; transition: 0.2s; cursor: pointer;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .product-card:hover { transform: translateY(-4px); border-color: var(--orange); }
+
+        .product-img {
+            width: 100%; aspect-ratio: 1/1; object-fit: cover;
+            border-radius: 1.8rem; margin-bottom: 1rem;
+        }
+
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(10px);
+            align-items: center; justify-content: center; z-index: 2000; padding: 1rem;
+        }
         .modal.active { display: flex; }
-        .modal-content { background: var(--surface); border-radius: 2.5rem; padding: 2rem; width: 100%; max-width: 450px; position: relative; border: 2px solid var(--orange); }
-        .admin-trigger { position: fixed; bottom: 20px; right: 20px; width: 40px; height: 40px; opacity: 0; cursor: pointer; z-index: 999; }
-        .admin-panel { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 400px; background: var(--surface); border-radius: 2rem; padding: 2rem; border: 2px solid var(--orange); z-index: 3000; }
+        .modal-content {
+            width: 100%; max-width: 420px; background: var(--surface);
+            border-radius: 2.5rem; padding: 2rem; border: 2px solid var(--orange);
+            position: relative; max-height: 90vh; overflow-y: auto;
+        }
+
+        /* Testimonials */
+        .testimonial-item {
+            background: var(--card-bg); padding: 1rem; border-radius: 1.5rem;
+            margin-bottom: 1rem; border-left: 4px solid var(--blue);
+        }
+
+        /* Admin */
+        .admin-trigger { position: fixed; bottom: 10px; right: 10px; width: 30px; height: 30px; opacity: 0; z-index: 999; cursor: pointer; }
+        .admin-panel {
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 90%; max-width: 400px; background: var(--surface);
+            padding: 2rem; border-radius: 2rem; border: 2px solid var(--orange); z-index: 3001;
+        }
         .admin-panel.show { display: block; }
-        .admin-panel input, .admin-panel textarea, .admin-panel button { width: 100%; margin: 0.5rem 0; padding: 0.8rem; border-radius: 1rem; border: 1px solid #ccc; }
-        .delete-prod { color: red; cursor: pointer; border: 1px solid red; padding: 2px 8px; border-radius: 5px; background: none; }
+
+        @media (min-width: 600px) { .product-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (min-width: 1000px) { .product-grid { grid-template-columns: repeat(3, 1fr); } }
     </style>
 </head>
 <body>
-    <div class="anim-glow"><span class="blob1"></span><span class="blob2"></span><span class="blob3"></span><span class="blob4"></span></div>
+
+    <div class="anim-glow">
+        <span class="blob1"></span><span class="blob2"></span><span class="blob3"></span><span class="blob4"></span>
+    </div>
 
     <div class="container">
         <div class="top-bar">
             <div class="search-wrapper">
-                <div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Gözleg..."></div>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Gözleg...">
+                </div>
             </div>
             <div class="actions">
                 <a href="tel:+99364375286" class="phone"><i class="fas fa-phone-alt"></i><span>+993 64 37 52 86</span></a>
@@ -62,149 +213,157 @@
             <h2 class="section-title">Kolleksiýa</h2>
             <div class="product-grid" id="productGrid"></div>
         </section>
+
+        <section class="testimonials-section">
+            <h2 class="section-title">Müşderi pikirleri</h2>
+            <div id="testimonialList"></div>
+            <div class="add-testimonial" style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
+                <input type="text" id="testimonialName" placeholder="Adyňyz" style="padding: 12px; border-radius: 1rem; border: 1px solid var(--glass-border);">
+                <textarea id="testimonialComment" placeholder="Teswiriňiz..." style="padding: 12px; border-radius: 1rem; border: 1px solid var(--glass-border);"></textarea>
+                <button id="addTestimonialBtn" style="padding: 12px; border-radius: 1rem; background: var(--orange); color: white; border: none; cursor: pointer;">Goş</button>
+            </div>
+        </section>
     </div>
 
     <div class="admin-trigger" id="adminTrigger"></div>
 
     <div class="admin-panel" id="adminPanel">
+        <h3>Admin Paneli</h3>
         <div id="adminLogin">
-            <h3>Admin Giriş</h3>
-            <input type="password" id="adminPass" placeholder="Parol">
-            <button id="loginAdminBtn">Gir</button>
+            <input type="password" id="adminPass" placeholder="Parol" style="width:100%; padding:10px; margin:10px 0;">
+            <button id="loginAdminBtn" style="width:100%; padding:10px; background:var(--blue); color:white; border:none; border-radius:10px;">Gir</button>
         </div>
         <div id="adminControls" style="display:none;">
-            <h4>Täze Önüm Goş</h4>
-            <input type="text" id="prodName" placeholder="Ady">
-            <input type="text" id="prodPrice" placeholder="Bahasy (mysal: 150)">
-            <textarea id="prodDesc" placeholder="Düşündiriş"></textarea>
-            <input type="file" id="prodImage" accept="image/*">
-            <button id="addProductBtn" style="background:var(--orange); color:white; font-weight:bold;">Goş</button>
-            <hr><div id="adminProductList"></div>
-            <button id="closeAdminBtn">Ýap</button>
+            <input type="text" id="prodName" placeholder="Önüm ady" style="width:100%; padding:10px; margin:5px 0;">
+            <input type="number" id="prodPrice" placeholder="Bahasy" style="width:100%; padding:10px; margin:5px 0;">
+            <textarea id="prodDesc" placeholder="Düşündiriş" style="width:100%; padding:10px; margin:5px 0;"></textarea>
+            <input type="file" id="prodImage" accept="image/*" style="margin:10px 0;">
+            <button id="addProductBtn" style="width:100%; padding:10px; background:var(--orange); color:white; border:none; border-radius:10px;">Önüm Goş</button>
+            <div id="adminProductList" style="margin-top:20px; max-height:150px; overflow-y:auto;"></div>
+            <button id="closeAdminBtn" style="width:100%; margin-top:10px; background:transparent; border:1px solid red; color:red;">Ýap</button>
         </div>
     </div>
 
     <div class="modal" id="productModal">
         <div class="modal-content">
-            <span style="float:right; cursor:pointer; font-size:2rem;" id="closeModal">&times;</span>
-            <img id="modalImage" src="" style="width:100%; border-radius:1rem;">
-            <h2 id="modalName"></h2>
+            <span id="closeModal" style="position:absolute; right:20px; top:10px; font-size:30px; cursor:pointer;">&times;</span>
+            <img id="modalImage" src="" style="width:100%; border-radius:15px;">
+            <h2 id="modalName" style="margin-top:15px;"></h2>
             <p id="modalPrice" style="color:var(--orange); font-size:1.5rem; font-weight:bold;"></p>
-            <p id="modalDescription" style="margin-top:1rem;"></p>
+            <p id="modalDescription" style="margin-top:10px; opacity:0.8;"></p>
         </div>
     </div>
 
     <script>
-        // --- KONFIGURASIÝA ---
-        const SUPABASE_URL = 'https://hkciztmtnqvcmvlogcdz.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_VURRdtnDXn7DSNW2S2xg9A_7H3-l-no';
-        const IMGBB_KEY = '60a736976267dfafdfd0b7a90fc2b3ed';
+        const IMGBB_API = '60a736976267dfafdfd0b7a90fc2b3ed'; 
+        let products = JSON.parse(localStorage.getItem('salam_products')) || [];
+        let testimonials = JSON.parse(localStorage.getItem('salam_testimonials')) || [];
 
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-        async function loadProducts() {
-            const { data, error } = await supabase.from('products').select('*').order('id', { ascending: false });
-            if (error) { console.error(error); return; }
-            renderProducts(data);
-            updateAdminProductList(data);
+        function renderProducts(filter = '') {
+            const grid = document.getElementById('productGrid');
+            const filtered = products.filter(p => p.name.toLowerCase().includes(filter.toLowerCase()));
+            grid.innerHTML = filtered.length ? filtered.map(p => `
+                <div class="product-card" onclick="showModal('${p.id}')">
+                    <img src="${p.image}" class="product-img">
+                    <div style="font-weight:bold;">${p.name}</div>
+                    <div style="color:var(--orange);">${p.price} manat</div>
+                </div>
+            `).join('') : '<p>Önüm tapylmady.</p>';
         }
 
-        function renderProducts(data, filter = '') {
-            const grid = document.getElementById('productGrid');
-            const searchVal = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = data.filter(p => p.name.toLowerCase().includes(searchVal));
-            
-            grid.innerHTML = filtered.map(p => `
-                <div class="product-card" onclick="showModal('${p.name}', '${p.image_url}', '${p.price}', '${p.description || ''}')">
-                    <img src="${p.image_url}" class="product-img">
-                    <div class="product-name">${p.name}</div>
-                    <div class="product-price">${p.price} TMT</div>
-                </div>
-            `).join('');
+        function showModal(id) {
+            const p = products.find(x => x.id === id);
+            if(!p) return;
+            document.getElementById('modalImage').src = p.image;
+            document.getElementById('modalName').innerText = p.name;
+            document.getElementById('modalPrice').innerText = p.price + ' manat';
+            document.getElementById('modalDescription').innerText = p.description;
+            document.getElementById('productModal').classList.add('active');
         }
 
         async function onAddProduct() {
-            const btn = document.getElementById('addProductBtn');
             const name = document.getElementById('prodName').value;
             const price = document.getElementById('prodPrice').value;
             const desc = document.getElementById('prodDesc').value;
             const file = document.getElementById('prodImage').files[0];
 
-            if (!name || !price || !file) { alert("Doly dolduryň!"); return; }
-            
-            btn.innerText = "Ýüklenýär...";
-            btn.disabled = true;
+            if(!name || !price || !file) return alert('Hemme ýeri dolduryň!');
 
-            // 1. ImgBB Upload
             const formData = new FormData();
             formData.append('image', file);
-            const imgRes = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_KEY}`, { method: 'POST', body: formData });
-            const imgData = await imgRes.json();
+            
+            try {
+                const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API}`, { method: 'POST', body: formData });
+                const data = await res.json();
+                const imageUrl = data.data.url;
 
-            if (imgData.success) {
-                // 2. Supabase Upload
-                const { error } = await supabase.from('products').insert([
-                    { name, price, description: desc, image_url: imgData.data.url }
-                ]);
-
-                if (error) alert("Supabase ýalňyşlygy: " + error.message);
-                else {
-                    alert("Haryt goşuldy!");
-                    location.reload();
-                }
-            } else {
-                alert("Surat ýüklenmedi!");
-            }
-            btn.innerText = "Goş";
-            btn.disabled = false;
+                const newProd = { id: 'p' + Date.now(), name, price, description: desc, image: imageUrl };
+                products.push(newProd);
+                localStorage.setItem('salam_products', JSON.stringify(products));
+                renderProducts();
+                updateAdminList();
+                alert('Önüm goşuldy!');
+            } catch(e) { alert('Surat ýüklenmedi.'); }
         }
 
-        function updateAdminProductList(data) {
+        function updateAdminList() {
             const list = document.getElementById('adminProductList');
-            list.innerHTML = data.map(p => `
-                <div style="display:flex; justify-content:space-between; margin:5px 0;">
+            list.innerHTML = products.map(p => `
+                <div style="display:flex; justify-content:space-between; margin-bottom:5px; background:rgba(0,0,0,0.05); padding:5px;">
                     <span>${p.name}</span>
-                    <button class="delete-prod" onclick="deleteProduct(${p.id})">Poz</button>
+                    <button onclick="deleteProd('${p.id}')" style="color:red; border:none; background:none;">Poz</button>
                 </div>
             `).join('');
         }
 
-        async function deleteProduct(id) {
-            if (confirm("Pozmak isleýärsiňizmi?")) {
-                await supabase.from('products').delete().eq('id', id);
-                location.reload();
-            }
-        }
-
-        function showModal(name, img, price, desc) {
-            document.getElementById('modalName').innerText = name;
-            document.getElementById('modalImage').src = img;
-            document.getElementById('modalPrice').innerText = price + " TMT";
-            document.getElementById('modalDescription').innerText = desc;
-            document.getElementById('productModal').classList.add('active');
-        }
+        window.deleteProd = (id) => {
+            products = products.filter(x => x.id !== id);
+            localStorage.setItem('salam_products', JSON.stringify(products));
+            renderProducts();
+            updateAdminList();
+        };
 
         // Event Listeners
-        document.getElementById('closeModal').onclick = () => document.getElementById('productModal').classList.remove('active');
         document.getElementById('adminTrigger').onclick = () => document.getElementById('adminPanel').classList.toggle('show');
         document.getElementById('loginAdminBtn').onclick = () => {
-            if (document.getElementById('adminPass').value === '1234') {
+            if(document.getElementById('adminPass').value === '1234') {
                 document.getElementById('adminLogin').style.display = 'none';
                 document.getElementById('adminControls').style.display = 'block';
+                updateAdminList();
             }
         };
         document.getElementById('addProductBtn').onclick = onAddProduct;
-        document.getElementById('searchInput').oninput = loadProducts;
+        document.getElementById('closeModal').onclick = () => document.getElementById('productModal').classList.remove('active');
         document.getElementById('closeAdminBtn').onclick = () => document.getElementById('adminPanel').classList.remove('show');
-
-        // Tema
+        document.getElementById('searchInput').oninput = (e) => renderProducts(e.target.value);
         document.getElementById('themeToggle').onclick = () => {
             document.body.classList.toggle('dark');
             const isDark = document.body.classList.contains('dark');
-            document.querySelector('#themeToggle i').className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+            document.getElementById('themeToggle').innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
         };
 
-        window.onload = loadProducts;
+        // Testimonials
+        document.getElementById('addTestimonialBtn').onclick = () => {
+            const name = document.getElementById('testimonialName').value;
+            const text = document.getElementById('testimonialComment').value;
+            if(name && text) {
+                testimonials.push({name, text});
+                localStorage.setItem('salam_testimonials', JSON.stringify(testimonials));
+                renderTestimonials();
+                document.getElementById('testimonialName').value = '';
+                document.getElementById('testimonialComment').value = '';
+            }
+        };
+
+        function renderTestimonials() {
+            document.getElementById('testimonialList').innerHTML = testimonials.map(t => `
+                <div class="testimonial-item"><strong>${t.name}:</strong> <p>${t.text}</p></div>
+            `).join('');
+        }
+
+        // Initial Load
+        renderProducts();
+        renderTestimonials();
     </script>
 </body>
 </html>
